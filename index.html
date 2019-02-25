@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MVVM一个简单的例子</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.bootcss.com/twitter-bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script>
+    <script src="./mvvm.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <input class="form-control" type="text" id="input">
+        </div>
+        <div class="alert alert-warning">
+            <span class="box">100</span>
+            <button class="btn btn-default" type="button" id="add">+</button>
+        </div>
+        <button class="btn btn-default" type="button" id="button"">点击隐藏输入框</button>
+        
+        <ul class="list">
+            <!-- 循环列表 -->
+        </ul>
+    </div>
+</body>
+<script>
+
+var Vm = new $vm({
+    // 绑定的变量值
+    data: {
+        info: true,     //控制input是否显示
+        num: 100,      //绑定Input输入框的值
+        list: []        //列表
+    },
+    // 数据就绪后初始化执行生命周期
+    created() {
+        // 对input进行数据的双向绑定
+        this.bindVal($('#input'), 'num', 100)
+
+    },
+    // 观察者模式 某值发生变化时触发函数 进行dom操作
+    watch: {
+        info(val) {
+            if(val) {
+                $('#button').text('点击隐藏')
+                $('#input').show()
+
+            } else {
+                $('#button').text('点击显示')
+                $('#input').hide()
+            }
+        },
+        num(val) {
+            $('.box').text(val)
+        },
+        list(val) {
+            var list = ''
+            // 循环数组生成dom
+            val.forEach(e => {
+                var dom = `<li>${e}</li>`
+                list += dom
+            })
+            $('.list').html(list)
+        }
+    },
+    // 函数
+    methods() {
+        // 点击按钮
+        $('#button').click(function() {
+            // 如果打开就关闭 否则打开
+            if(Vm.data.info) {
+                Vm.set('info', false)
+            }else {
+                Vm.set('info', true)
+            }
+        })
+        //添加到列表
+        $('#add').click(function() {
+            var num = Vm.data.num
+            Vm.data.list.push(num)
+            //触发更新
+            Vm.set('list', Vm.data.list)
+        })
+    }
+})
+
+
+
+// 在外部新增一个未在data里定义的值
+Vm.bindModel('new', true)
+// 修改测试
+Vm.set('new', 'xxx')
+
+
+</script>
+</html>
