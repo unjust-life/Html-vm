@@ -51,6 +51,14 @@ var $vm = function (obj) {
         this.created()
         $(function () {
             this.methods()
+
+            for (var key in this.data) {
+                //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
+                if (this.data.hasOwnProperty(key) === true) {
+                    var val = this.data[key]
+                    this.set(key, val)
+                }
+            }
         }.bind(this))
     } catch {
         console.log('new对象失败')

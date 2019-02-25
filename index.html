@@ -16,7 +16,7 @@
             <input class="form-control" type="text" id="input">
         </div>
         <div class="alert alert-warning">
-            <span class="box">100</span>
+            <span class="box"></span>
             <button class="btn btn-default" type="button" id="add">+</button>
         </div>
         <button class="btn btn-default" type="button" id="button"">点击隐藏输入框</button>
@@ -33,7 +33,7 @@ var Vm = new $vm({
     data: {
         info: true,     //控制input是否显示
         num: 100,      //绑定Input输入框的值
-        list: []        //列表
+        list: ['第一项']        //列表
     },
     // 数据就绪后初始化执行生命周期
     created() {
@@ -58,9 +58,9 @@ var Vm = new $vm({
         },
         list(val) {
             var list = ''
-            // 循环数组生成dom
-            val.forEach(e => {
-                var dom = `<li>${e}</li>`
+            // 循环数组生成dom 生成index标识
+            val.forEach((e, index) => {
+                var dom = `<li data-index="${index}">${e}</li>`
                 list += dom
             })
             $('.list').html(list)
