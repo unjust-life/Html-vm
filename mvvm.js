@@ -11,8 +11,8 @@ var $vm = function (obj) {
         this.$$fn = {}
         $(function () {
             // dom加载后进行初始化
-            this.created()
             this.methods()
+            this.created()
             // 设置初始值
             for (var key in this.data) {
                 //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
@@ -21,6 +21,7 @@ var $vm = function (obj) {
                     this.set(key, val)
                 }
             }
+            
         }.bind(this))
     } catch(e) {
         console.log('new对象失败')
@@ -57,7 +58,7 @@ $vm.prototype.bindVal = function (dom, prop, val) {
             var tag_name = $(this)[0].tagName.toLowerCase()
             // 如果是合法类型就赋值并监听数据实时变化
             if(tag_name === "input" || tag_name === "textarea" || tag_name === "select") {
-                $this.val(val)
+                // $this.val(val)
                 // 执行双绑 监听dom的变化重置data数据
                 $this.on("input propertychange", function (e) {
                     var newVal = $this.val()
@@ -65,7 +66,7 @@ $vm.prototype.bindVal = function (dom, prop, val) {
                 })
                 //如果不是则进行写入文本
             } else {
-                $this.text(val)
+                // $this.text(val)
             }
         })
     } catch(e) {

@@ -38,7 +38,7 @@ var Vm = new $vm({
     // 数据就绪后初始化执行生命周期
     created: function() {
         // 对input进行数据的双向绑定
-        this.bindVal($('.number'), 'num', 100)
+        this.bindVal($('.number'), 'num')
 
     },
     // 观察者模式 某值发生变化时触发函数 进行dom操作
