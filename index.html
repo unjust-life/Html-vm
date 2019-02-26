@@ -11,16 +11,16 @@
     <script src="./mvvm.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="app">
         <div class="form-group">
-            <input class="form-control" type="text" id="input">
+            <input class="form-control number" type="text">
+            <input class="form-control number" type="text">
         </div>
         <div class="alert alert-warning">
-            <span class="box"></span>
+            <span class="number"></span>
             <button class="btn btn-default" type="button" id="add">+</button>
         </div>
         <button class="btn btn-default" type="button" id="button"">点击隐藏输入框</button>
-        
         <ul class="list">
             <!-- 循环列表 -->
         </ul>
@@ -36,9 +36,9 @@ var Vm = new $vm({
         list: ['第一项']        //列表
     },
     // 数据就绪后初始化执行生命周期
-    created() {
+    created: function() {
         // 对input进行数据的双向绑定
-        this.bindVal($('#input'), 'num', 100)
+        this.bindVal($('.number'), 'num', 100)
 
     },
     // 观察者模式 某值发生变化时触发函数 进行dom操作
@@ -46,15 +46,15 @@ var Vm = new $vm({
         info(val) {
             if(val) {
                 $('#button').text('点击隐藏')
-                $('#input').show()
+                $('.number').show()
 
             } else {
                 $('#button').text('点击显示')
-                $('#input').hide()
+                $('.number').hide()
             }
         },
         num(val) {
-            $('.box').text(val)
+            // console.log('num的值改变为'+val)
         },
         list(val) {
             var list = ''
@@ -67,7 +67,7 @@ var Vm = new $vm({
         }
     },
     // 函数
-    methods() {
+    methods: function() {
         // 点击按钮
         $('#button').click(function() {
             // 如果打开就关闭 否则打开
