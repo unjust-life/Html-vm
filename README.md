@@ -51,6 +51,8 @@ class=number的dom都会被赋值num的值，如果dom节点是输入框文本�
 #一个简单的demo地址
 https://unjust-life.github.io/mvvm/index.html
 
+#v0.13移除绑定函数  和set函数合并  添加计算属性 computed 可根据多个值的变动而随之改变
+
 #v0.12新增 在绑定多个dom对象后他们都会订阅对应属性 当属性改变后所有dom节点都会得到通知
 
 #v0.11新增created之后注入data默认数据

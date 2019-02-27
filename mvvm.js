@@ -6,42 +6,37 @@ var $vm = function (obj) {
         //写入传入的对象
         this.data = obj.data
         this.watch = obj.watch
+        this.computed = obj.computed
         this.created = obj.created
         this.methods = obj.methods
-        this.$$fn = {}
+        this.$$fn = {} //隐藏的观察者函数
+        this.$$count = {}
         $(function () {
             // dom加载后进行初始化
-            this.methods()
-            this.created()
-            // 设置初始值
-            for (var key in this.data) {
-                //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
-                if (this.data.hasOwnProperty(key) === true) {
-                    var val = this.data[key]
-                    this.set(key, val)
+            this.created() //初始化绑定
+            this.methods() //初始化方法作用域绑定事件
+            // 是否初始化所有值到视图上 默认是  initSet属性控制开关    如果页面是服务端渲染首次数据，建议关闭
+            if (!obj.initSet) {
+                for (var key in this.data) {
+                    //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
+                    if (this.data.hasOwnProperty(key) === true) {
+                        var val = this.data[key]
+                        this.set(key, val)
+                    }
                 }
             }
             
         }.bind(this))
     } catch(e) {
-        console.log('new对象失败')
+        console.log('error init')
     }
 }
-// 新增绑定的数据 prop属性名 val初始值
-$vm.prototype.bindModel = function (prop, val) {
-    try {
-        this.data[prop] = val
-    } catch(e){
-        console.log(prop + '数据绑定失败')
-    }
-}
-// 给dom快速绑定val的方法 dom指向要绑定的元素 prop是需绑定的属性名 val是初始值
-// 
-$vm.prototype.bindVal = function (dom, prop, val) {
+// 给dom快速绑定val的方法 dom指向要绑定的元素 prop是需绑定的属性名
+$vm.prototype.bindVal = function (dom, prop) {
     try {
         var that = this
         // 订阅对象 隐藏函数  如果订阅的值发生改变就会通知所有dom
-        that.$$fn[prop] = function (newVal) {
+        that.$$fn[prop] = function (newVal, oldVal) {
             dom.each(function () {
                 var $this = $(this)
                 var tag_name = $(this)[0].tagName.toLowerCase()
@@ -56,22 +51,41 @@ $vm.prototype.bindVal = function (dom, prop, val) {
         dom.each(function () {
             var $this = $(this)
             var tag_name = $(this)[0].tagName.toLowerCase()
-            // 如果是合法类型就赋值并监听数据实时变化
+            // 如果是合法类型就监听oninput事件来反馈数据实时变化
             if(tag_name === "input" || tag_name === "textarea" || tag_name === "select") {
-                // $this.val(val)
                 // 执行双绑 监听dom的变化重置data数据
                 $this.on("input propertychange", function (e) {
                     var newVal = $this.val()
                     that.set(prop, newVal)
                 })
-                //如果不是则进行写入文本
-            } else {
-                // $this.text(val)
             }
         })
     } catch(e) {
-        console.log(prop, '数据双绑失败')
+        console.log('error bindVal', prop)
     }
+}
+// 计算属性
+$vm.prototype.watchVal = function (arr) {
+    try {
+        // 获得计算属性名
+        var prop = arr[0]
+        // 获得初始值 并赋予data
+        this.data[prop] = this.computed[prop]()
+        // 记录它的所有依赖
+        for (var i = 1; i < arr.length; i++) {
+            // 记录每个依赖属性名 并写入$$count的同名属性的数组依赖项 当该属性发生变化 会依次通知数组里所有的属性
+            var dataProp = arr[i]
+            if (this.$$count[dataProp] === undefined) {
+                this.$$count[dataProp] = []
+                this.$$count[dataProp].push(prop)
+            } else {
+                this.$$count[dataProp].push(prop)
+            }
+        }
+    } catch {
+        console.log('error computed')
+    }
+
 }
 // 取值
 $vm.prototype.get = function (prop) {
@@ -80,34 +94,44 @@ $vm.prototype.get = function (prop) {
         //返回当前值
         return this.data[prop]
     } catch(e) {
-        console.log(prop + '取值失败')
+        console.log('error getData' + prop)
     }
 }
-// 修改值
+// 存值
 $vm.prototype.set = function (prop, val) {
     try {
-        if (!this.data[prop] === undefined) {
-            console.log(prop + '未定义')
-            return
-        } else {
-            // 修改对象上的属性
-            this.data[prop] = val
-        }
-        // 如果有回调 同时执行绑定的函数
-        // if (this.fn[prop]) {
-        //     this.fn[prop](val)
-        // } else {
-        //     // console.log(prop + '未在fn上指定对应函数')
-        // }
+        var oldVal = this.data[prop]
+        this.data[prop] = val
+
         //如果发现被列入观察者  执行函数并注入修改后的值
         if (this.watch[prop]) {
-            this.watch[prop](val)
+            this.watch[prop](val, oldVal)
         }
         //查询是否有订阅值
         if (this.$$fn[prop]) {
-            this.$$fn[prop](val)
+            this.$$fn[prop](val, oldVal)
+        }
+        //查询是否有依赖于此项的计算属性
+        if (this.$$count[prop]) {
+            // 获得所有依赖此值的计算属性数组
+            var arr = this.$$count[prop]
+            //循环遍历每个计算属性并重新计算它的值
+            for (var i = 0; i < arr.length; i++) {
+                var item = arr[i]
+                // 获得返回的值
+                this.data[item] = this.computed[item]()
+            }
         }
     } catch(e) {
-        console.log(prop + '存值失败')
+        console.log('error setData' + prop)
     }
 }
+
+
+
+//计算属性原理
+//计算属性需要手动记录依赖的值 因为这个库为了兼容性考虑没有使用元编程 所以不能自动去做取值依赖
+//申明计算属性需在created生命周期里手动创建每个属性的依赖项   例如this.watchVal(['allNum', 'num'])   意思是allNum这个属性 依赖于num得到  当num改变时将会执行computed中的allNum函数并得到新值
+//warchVal()接收一个数组参数 第一个值是计算属性的名称 后续的选项是它所依赖的值的名称  任何一个被记录依赖的属性的变动都会重新计算它本身
+//然后在computed里建立同名计算属性函数  处理逻辑  需要return一个值
+//目前暂不支持计算属性依赖别的计算属性 因为那样会导致混乱
