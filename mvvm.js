@@ -3,6 +3,7 @@
 // 构造函数的开始
 var $vm = function (obj) {
     try {
+        var that = this
         //写入传入的对象
         this.data = obj.data
         this.watch = obj.watch
@@ -11,22 +12,21 @@ var $vm = function (obj) {
         this.methods = obj.methods
         this.$$fn = {} //隐藏的观察者函数
         this.$$count = {}
-        $(function () {
-            // dom加载后进行初始化
-            this.created() //初始化绑定
-            this.methods() //初始化方法作用域绑定事件
+        // dom加载后进行初始化
+        $(document).ready(function () {
+            that.created() //初始化绑定
+            that.methods() //初始化方法作用域绑定事件
             // 是否初始化所有值到视图上 默认是  initSet属性控制开关    如果页面是服务端渲染首次数据，建议关闭
             if (!obj.initSet) {
-                for (var key in this.data) {
+                for (var key in that.data) {
                     //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
-                    if (this.data.hasOwnProperty(key) === true) {
-                        var val = this.data[key]
-                        this.set(key, val)
+                    if (that.data.hasOwnProperty(key) === true) {
+                        var val = that.data[key]
+                        that.set(key, val)
                     }
                 }
             }
-            
-        }.bind(this))
+        })
     } catch(e) {
         console.log('error init')
     }
@@ -74,12 +74,12 @@ $vm.prototype.watchVal = function (arr) {
         // 记录它的所有依赖
         for (var i = 1; i < arr.length; i++) {
             // 记录每个依赖属性名 并写入$$count的同名属性的数组依赖项 当该属性发生变化 会依次通知数组里所有的属性
-            var dataProp = arr[i]
-            if (this.$$count[dataProp] === undefined) {
-                this.$$count[dataProp] = []
-                this.$$count[dataProp].push(prop)
+            var watchProp = arr[i]
+            if (this.$$count[watchProp] === undefined) {
+                this.$$count[watchProp] = []
+                this.$$count[watchProp].push(prop)
             } else {
-                this.$$count[dataProp].push(prop)
+                this.$$count[watchProp].push(prop)
             }
         }
     } catch {
@@ -113,7 +113,7 @@ $vm.prototype.set = function (prop, val) {
         }
         //查询是否有依赖于此项的计算属性
         if (this.$$count[prop]) {
-            // 获得所有依赖此值的计算属性数组
+            // 获得所有依赖此值的计算属性
             var arr = this.$$count[prop]
             //循环遍历每个计算属性并重新计算它的值
             for (var i = 0; i < arr.length; i++) {
