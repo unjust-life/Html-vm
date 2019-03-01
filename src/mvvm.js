@@ -4,19 +4,25 @@
 var $vm = function (obj) {
     try {
         var that = this
-        //写入传入的对象
+        // 覆盖默认值
         this.data = obj.data
         this.watch = obj.watch
-        this.computed = obj.computed
         this.created = obj.created
+        this.computed = obj.computed
         this.methods = obj.methods
-        this.$$fn = {} //隐藏的观察者函数
-        this.$$count = {}
+        this.$$fn = {}   //隐藏的观察者函数 用于watch
+        this.$$count = {}//隐藏的订阅  用于computed
         // dom加载后进行初始化
         $(document).ready(function () {
+            // 是否初始化编译挂在dom 实现视图绑定  默认是  initDom属性控制开关  如果不需要绑定表达式 建议关闭
+            if (!obj.initDom) {
+                that.$$compile()
+            }
+
             that.created() //初始化绑定
             that.methods() //初始化方法作用域绑定事件
-            // 是否初始化所有值到视图上 默认是  initSet属性控制开关    如果页面是服务端渲染首次数据，建议关闭
+
+            // 是否初始化更新所有值 默认是  initSet属性控制开关    如果页面是服务端渲染首次数据，建议关闭
             if (!obj.initSet) {
                 for (var key in that.data) {
                     //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
@@ -126,7 +132,6 @@ $vm.prototype.set = function (prop, val) {
         console.log('error setData' + prop)
     }
 }
-
 
 
 //计算属性原理

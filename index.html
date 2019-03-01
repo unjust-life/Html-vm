@@ -9,7 +9,8 @@
     <!-- <link href="https://cdn.bootcss.com/twitter-bootstrap/4.1.2/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js"></script> -->
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="./mvvm.js"></script>
+    <script src="./src/mvvm.js"></script>
+    <script src="./src/dom.js"></script>
 </head>
 <body>
     <div class="container" id="app">
@@ -21,20 +22,24 @@
             <span>双倍输入框的值(计算属性)：</span>
             <span id="allNum"></span>
         </div>
+        <div>
+            <span>{{list}}</span>
+        </div>
         <div class="alert alert-warning">
             <span class="number"></span>
             <button class="btn btn-default" type="button" id="add">+</button>
         </div>
-        <button class="btn btn-default" type="button" id="button"">点击隐藏输入框</button>
+        <button class="btn btn-default" type="button" id="button"">点击隐藏{{obj}}</button>
         
         <ul class="list">
             <!-- 循环列表 -->
         </ul>
     </div>
 </body>
+
 <script>
 
-var Vm = new $vm({
+var vm = new $vm({
     // 绑定的变量值
     data: {
         info: true,     //控制input是否显示
@@ -76,7 +81,7 @@ var Vm = new $vm({
     },
     computed: {
         allNum: function() {
-            var num = Vm.data.num * 2
+            var num = vm.data.num * 2
             $('#allNum').text(num)
             return num
         }
@@ -86,25 +91,25 @@ var Vm = new $vm({
         // 点击按钮
         $('#button').click(function() {
             // 如果打开就关闭 否则打开
-            if(Vm.data.info) {
-                Vm.set('info', false)
+            if(vm.data.info) {
+                vm.set('info', false)
             }else {
-                Vm.set('info', true)
+                vm.set('info', true)
             }
         })
         //添加到列表
         $('#add').click(function() {
-            var num = Vm.data.num
-            Vm.data.list.push(num)
+            var num = vm.data.num
+            vm.data.list.push(num)
             //触发更新
-            Vm.set('list', Vm.data.list)
+            vm.set('list', vm.data.list)
         })
     }
 })
 
 
 // 在外部新增一个未在data里定义的值
-Vm.set('new', [0.1])
+// vm.set('new', [0.1])
 
 
 </script>

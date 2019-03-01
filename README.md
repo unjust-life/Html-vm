@@ -133,6 +133,23 @@ computed: {
 
 
 
+
+
+
+API文档
+________________
+
+<pre><code>
+
+var Vm = new $vm({
+	initSet: true
+	init
+})
+
+
+</code></pre>
+
+
 ---
 #一个简单的demo地址
 https://unjust-life.github.io/mvvm/index.html
