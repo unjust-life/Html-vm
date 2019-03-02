@@ -1,6 +1,4 @@
-// 兼容IE8低版本浏览器的数据绑定函数
-// 为了不影响页面服务端渲染 对项目本身代码产生影响 最后还是放弃对dom进行整体的拦截和编译 所以涉及的操作都需要函数式编程来实现最大兼容 框架本身不会对原有代码产生影响
-// 构造函数的开始
+// v0.13
 var $vm = function (obj) {
     try {
         var that = this
@@ -12,16 +10,9 @@ var $vm = function (obj) {
         this.methods = obj.methods
         this.$$fn = {}   //隐藏的观察者函数 用于watch
         this.$$count = {}//隐藏的订阅  用于computed
-        // dom加载后进行初始化
         $(document).ready(function () {
-            // 是否初始化编译挂在dom 实现视图绑定  默认是  initDom属性控制开关  如果不需要绑定表达式 建议关闭
-            if (!obj.initDom) {
-                // that.$$compile()
-            }
-
             that.created() //初始化绑定
             that.methods() //初始化方法作用域绑定事件
-
             // 是否初始化更新所有值 默认是  initSet属性控制开关    如果页面是服务端渲染首次数据，建议关闭
             if (!obj.initSet) {
                 for (var key in that.data) {
@@ -128,16 +119,7 @@ $vm.prototype.set = function (prop, val) {
                 this.data[item] = this.computed[item]()
             }
         }
-        // this.updateView()
     } catch(e) {
         console.log('error setData' + prop)
     }
 }
-
-
-//计算属性原理
-//计算属性需要手动记录依赖的值 因为这个库为了兼容性考虑没有使用元编程 所以不能自动去做取值依赖
-//申明计算属性需在created生命周期里手动创建每个属性的依赖项   例如this.watchVal(['allNum', 'num'])   意思是allNum这个属性 依赖于num得到  当num改变时将会执行computed中的allNum函数并得到新值
-//warchVal()接收一个数组参数 第一个值是计算属性的名称 后续的选项是它所依赖的值的名称  任何一个被记录依赖的属性的变动都会重新计算它本身
-//然后在computed里建立同名计算属性函数  处理逻辑  需要return一个值
-//目前暂不支持计算属性依赖别的计算属性 因为那样会导致混乱

@@ -34,7 +34,7 @@ $vm.prototype.updateView = function () {
                 if (node && reg.test(node.nodeValue)) {
                     //执行替换
                     node.nodeValue = rep(node.nodeValue)
-                    console.log(node.nodeValue)
+                    // console.log(node.nodeValue)
                     //替换函数
                     function rep(text) {
                         var str = text.trim()
