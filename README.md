@@ -19,6 +19,7 @@ mvvm提供了一个构造函数$vm。它在被实例化后会获得一个对象�
 # watch 提供类似于vue的侦听属性  动态追踪数据变化的方法
 # computed 提供类似于vue的计算属性  动态计算复杂逻辑后的值
 # bindVal 提供视图层和数据层的双向绑定
+# data-vm 视图层自定义属性数据绑定
 
 # 待实现
 # 声明式的html模板渲染 {{}}表达式
@@ -61,8 +62,11 @@ Vm.set(prop, val)
 第一个参数是要改变的属性名，第二个参数是新的值
 例如Vm.set('num', 100)  就会将data下num的值改为100
 
-先不用管这有什么用处，只要知道这是修改值的方法就好了。
 
+
+怎样可以把我们的值绑定到视图上呢，如果是一个简单值，只需要在dom节点上绑定自定义属性data-vm="prop"
+例如
+<div data-vm="info"></div>
 
 
 watch对象
@@ -160,6 +164,7 @@ watchVal(arr)
 ---
 #一个简单的demo地址
 https://unjust-life.github.io/mvvm/index.html
+#v0.14新增视图自定义属性绑定数据  实验性质的{{}}表达式和虚拟dom
 
 #v0.13移除绑定函数  和set函数合并  添加计算属性 computed 可根据多个值的变动而随之改变
 

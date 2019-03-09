@@ -128,6 +128,11 @@ $vm.prototype.set = function (prop, val) {
                 this.data[item] = this.computed[item]()
             }
         }
+        // 如果节点绑定了此属性 更新节点
+        var dom = $('[data-vm="' + prop + '"]')
+        if (dom) {
+            dom.text(val)
+        }
         // this.updateView()
     } catch(e) {
         console.log('error setData' + prop)
