@@ -163,8 +163,8 @@ watchVal(arr)
 
 
 ---
-#一个简单的demo地址
-https://unjust-life.github.io/mvvm/index.html
+#一个简单的demo地址https://unjust-life.github.io/mvvm/index.html
+
 #v0.14新增视图自定义属性绑定数据  实验性质的{{}}表达式和虚拟dom
 
 #v0.13移除绑定函数  和set函数合并  添加计算属性 computed 可根据多个值的变动而随之改变
