@@ -68,8 +68,7 @@ Vm.set(prop, val)
 
 怎样可以把我们的值绑定到视图上呢，如果是一个简单值，只需要在dom节点上绑定自定义属性data-vm="prop"
 例如
-<div data-vm="info"></div>
-
+data-vm="info"
 
 watch对象
 ________________
