@@ -13,17 +13,19 @@ mvvm提供了一个构造函数$vm。它在被实例化后会获得一个对象�
 
 ### 特性
 
-# 已实现
-# 兼容性 兼容IE8
-# data  提供可以便捷修改获取的数据对象 不占用全局变量
-# watch 提供类似于vue的侦听属性  动态追踪数据变化的方法
-# computed 提供类似于vue的计算属性  动态计算复杂逻辑后的值
-# bindVal 提供视图层和数据层的双向绑定
-# data-vm 视图层自定义属性数据绑定
+#### 已实现
 
-# 待实现
-# 声明式的html模板渲染 {{}}表达式
-# 声明式的组件模板
+* 兼容性 兼容IE8
+* data  提供可以便捷修改获取的数据对象 不占用全局变量
+* watch 提供类似于vue的侦听属性  动态追踪数据变化的方法
+* computed 提供类似于vue的计算属性  动态计算复杂逻辑后的值
+* bindVal 提供视图层和数据层的双向绑定
+* data-vm 视图层自定义属性数据绑定
+
+#### 待实现
+
+* 声明式的html模板渲染 {{}}表达式
+* 声明式的组件模板
 
 ### 快速开始
 
@@ -33,10 +35,10 @@ mvvm提供了一个构造函数$vm。它在被实例化后会获得一个对象�
 new一个实例对象！
 
 var Vm = new $vm({
-	data:{},
-	watch:{},
-	computed:{},
-	created:function(){}
+  data:{},
+  watch:{},
+  computed:{},
+  created:function(){}
 })
 
 这样就完成了！
@@ -44,12 +46,12 @@ var Vm = new $vm({
 下面会解释每个属性对象的作用。
 
 var Vm = new $vm({
-	data:{
-		num: 0
-	}，
-	watch:{
-		num(val){}
-	}
+  data:{
+    num: 0
+  }，
+  watch:{
+    num(val){}
+  }
 })
 
 data对象
@@ -78,12 +80,12 @@ watch对象可以让我们追踪那些属性什么时候发生改变，并在改
 例如
 
 watch: {
-	num(val){
-		console.log(num)
-		if(val == 100) {
-			alert('100了哦')
-		}
-	}
+  num(val){
+    console.log(num)
+    if(val == 100) {
+      alert('100了哦')
+    }
+  }
 }
 
 在num改变时 值会被打印 当值等于100时 会弹出alert  同理可以执行别的操作  例如增删dom
@@ -97,7 +99,7 @@ ________________
 
 比如
 created(){
-	this.bindVal(dom, prop)
+  this.bindVal(dom, prop)
 }
 
 bindVal方法可以绑定一个值到dom节点上，并且在这个值改变的时候自动更新对应的dom节点。
@@ -108,7 +110,7 @@ bindVal第一个参数为一个JQ对象，可以是任何JQ选择器所选中的
 
 例子
 created(){
-	this.bindVal($('.number'), 'num')
+  this.bindVal($('.number'), 'num')
 }
 class=number的dom都会被赋值num的值，如果dom节点是输入框文本域或下拉框，那么在发生改变时会同步更改所有地方的num的值
 
@@ -124,19 +126,19 @@ computed对象用来存放计算属性的函数
 
 首先在created函数里新建一个计算属性并记录其依赖于num
 created: function() {
-	//记录计算属性的依赖 如allNum属性  依赖于num
-	this.watchVal(['allNum', 'num'])
+  //记录计算属性的依赖 如allNum属性  依赖于num
+  this.watchVal(['allNum', 'num'])
 }
 watchVal方法接收一个数组参数 每个项目都是字符串  第一项是要创建的计算属性的名字  例如'allNum' 后面是它所需要依赖通知的属性  如果有任何一个属性发生了改变那么它会进行计算函数返回一个新值
 
 要让allNum产生作用需定义在computed上
 在computed对象上定义一个名字叫allNum的函数 并定义其逻辑 返回2倍的num
 computed: {
-	allNum: function() {
-		var num = Vm.data.num * 2
-		$('#allNum').text(num)
-		return num
-	}
+  allNum: function() {
+    var num = Vm.data.num * 2
+    $('#allNum').text(num)
+    return num
+  }
 }
 
 每个计算属性都需要返回一个值 会被自动写入data属性来方便获得
