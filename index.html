@@ -4,34 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MVVM一个简单的例子</title>
+    <title>ToDoList</title>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="./src/mvvm.js"></script>
-    <!-- <script src="./src/dom.js"></script> -->
+    <script src="./src/vm.js"></script>
 </head>
 <body>
-    <div class="container" id="app">
-        <div class="form-group">
-            <input class="form-control number" type="text">
-            <input class="form-control number" type="text">
-        </div>
-        <div>
-            <span>双倍输入框的值(计算属性)：</span>
-            <span id="allNum"></span>
-        </div>
-        <div data-vm="info">
+    <div class="container">
+        <div class="form-group form-inline" style="margin: 20px auto;">
+            <input class="form-control" type="text" data-vm="num" value="15">
+            <button class="btn btn-default" type="button" id="button" data-vm="info">点击隐藏</button>
+            <button class="btn btn-default" type="button" id="add">将此项目添加到列表</button>
         </div>
 
-        <div data-vm="num">
-            <!-- <span>{{num}}</span> -->
-        </div>
         <div class="alert alert-warning">
-            <span class="number"></span>
-            <button class="btn btn-default" type="button" id="add">+</button>
+            <span>列表总和(计算属性演示)：</span>
+            <span data-vm="allNum"></span>
         </div>
-        <button class="btn btn-default" type="button" id="button"">点击隐藏{{obj}}</button>
-        
+
         <ul class="list">
             <!-- 循环列表 -->
         </ul>
@@ -45,38 +35,29 @@
 var vm = new $vm({
     // 绑定的变量值
     data: {
-        info: true,     //控制input是否显示
-        num: 100,      //绑定Input输入框的值
-        list: ['0']        //列表
+        info: '点击隐藏',     //控制input是否显示
+        num: 100,           //绑定Input输入框的值
+        list: [10]            //列表
     },
     // 数据就绪后初始化执行生命周期
     created: function() {
-        // 对input进行数据的双向绑定
-        this.bindVal($('.number'), 'num')
-
         //记录计算属性的依赖 如allNum属性  依赖于num
-        this.watchVal(['allNum', 'num'])
+        this.watchVal(['allNum', 'list'])
     },
     // 观察者模式 某值发生变化时触发函数 进行dom操作
     watch: {
         info(val) {
-            if(val) {
-                $('#button').text('点击隐藏')
+            if(val === '点击隐藏') {
                 $('.number').show()
-
             } else {
-                $('#button').text('点击显示')
                 $('.number').hide()
             }
-        },
-        num(val) {
-            // console.log('num的值改变为'+val)
         },
         list(val) {
             var list = ''
             // 循环数组生成dom 生成index标识
             val.forEach((e, index) => {
-                var dom = `<li data-index="${index}">${e}</li>`
+                var dom = `<li class="alert-success" data-index="${index}">${e}</li>`
                 list += dom
             })
             $('.list').html(list)
@@ -84,8 +65,11 @@ var vm = new $vm({
     },
     computed: {
         allNum: function() {
-            var num = vm.data.num * 2
-            $('#allNum').text(num)
+            var list = vm.data.list
+            function count (total, num){
+                return total + num
+            }
+            var num = list.reduce(count)
             return num
         }
     },
@@ -94,26 +78,23 @@ var vm = new $vm({
         // 点击按钮
         $('#button').click(function() {
             // 如果打开就关闭 否则打开
-            if(vm.data.info) {
-                vm.set('info', false)
+            if(vm.data.info === '点击隐藏') {
+                vm.set('info', '点击显示')
             }else {
-                vm.set('info', true)
+                vm.set('info', '点击隐藏')
             }
         })
         //添加到列表
         $('#add').click(function() {
             var num = vm.data.num
+
             vm.data.list.push(num)
             //触发更新
             vm.set('list', vm.data.list)
         })
     }
 })
-
-
-// 在外部新增一个未在data里定义的值
-// vm.set('new', [0.1])
-
+console.timeEnd('test')
 
 </script>
 </html>

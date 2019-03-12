@@ -1,4 +1,4 @@
-// 虚拟dom挂载编译模块
+// 虚拟dom挂载编译模块 仅仅是测试实验 开发中  请勿加入生产环境
 $vm.prototype.$$compile = function () {
     try {
         var app = document.getElementById('app')
@@ -34,7 +34,6 @@ $vm.prototype.updateView = function () {
                 if (node && reg.test(node.nodeValue)) {
                     //执行替换
                     node.nodeValue = rep(node.nodeValue)
-                    // console.log(node.nodeValue)
                     //替换函数
                     function rep(text) {
                         var str = text.trim()
@@ -70,6 +69,6 @@ $vm.prototype.updateView = function () {
         }
         document.getElementById('app').appendChild(dom)
     } catch (e) {
-        console.log('视图更新失败')
+        console.error('视图更新失败')
     }
 }
