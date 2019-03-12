@@ -148,6 +148,7 @@ methods()
 
 ---
 #一个简单的demo地址https://unjust-life.github.io/mvvm/index.html
+
 #v0.2 重写视图层和数据层的绑定 改为data-vm的绑定方式 更新服务端渲染的方法 重写部分逻辑 减少不必要的开销 优化代码性能
 
 #v0.14新增视图自定义属性绑定数据  实验性质的{{}}表达式和虚拟dom
