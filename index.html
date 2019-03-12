@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <div class="form-group form-inline" style="margin: 20px auto;">
-            <input class="form-control" type="text" data-vm="num" value="15">
+            <input class="form-control number" type="text" data-vm="num" value="15">
             <button class="btn btn-default" type="button" id="button" data-vm="info">点击隐藏</button>
             <button class="btn btn-default" type="button" id="add">将此项目添加到列表</button>
         </div>
@@ -67,7 +67,9 @@ var vm = new $vm({
         allNum: function() {
             var list = vm.data.list
             function count (total, num){
-                return total + num
+                var num1 = Number(total)
+                var num2 = Number(num)
+                return num1 + num2
             }
             var num = list.reduce(count)
             return num
