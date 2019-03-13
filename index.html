@@ -12,8 +12,8 @@
 <body>
     <div class="container">
         <div class="form-group form-inline" style="margin: 20px auto;">
-            <input class="form-control number" type="text" data-vm="num" value="15">
-            <button class="btn btn-default" type="button" id="button" data-vm="info">点击隐藏</button>
+            <input class="form-control number" type="text" data-vm="num" data-show="show" value="15">
+            <button class="btn btn-default" type="button" id="button">点击切换</button>
             <button class="btn btn-default" type="button" id="add">将此项目添加到列表</button>
         </div>
 
@@ -35,9 +35,9 @@
 var vm = new $vm({
     // 绑定的变量值
     data: {
-        info: '点击隐藏',     //控制input是否显示
-        num: 100,           //绑定Input输入框的值
-        list: [10]            //列表
+        show: true,          //控制input是否显示
+        num:  100,           //绑定Input输入框的值
+        list: [10]           //列表
     },
     // 数据就绪后初始化执行生命周期
     created: function() {
@@ -46,13 +46,6 @@ var vm = new $vm({
     },
     // 观察者模式 某值发生变化时触发函数 进行dom操作
     watch: {
-        info(val) {
-            if(val === '点击隐藏') {
-                $('.number').show()
-            } else {
-                $('.number').hide()
-            }
-        },
         list(val) {
             var list = ''
             // 循环数组生成dom 生成index标识
@@ -80,16 +73,15 @@ var vm = new $vm({
         // 点击按钮
         $('#button').click(function() {
             // 如果打开就关闭 否则打开
-            if(vm.data.info === '点击隐藏') {
-                vm.set('info', '点击显示')
+            if(vm.data.show) {
+                vm.set('show', false)
             }else {
-                vm.set('info', '点击隐藏')
+                vm.set('show', true)
             }
         })
         //添加到列表
         $('#add').click(function() {
             var num = vm.data.num
-
             vm.data.list.push(num)
             //触发更新
             vm.set('list', vm.data.list)

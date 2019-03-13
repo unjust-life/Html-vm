@@ -16,11 +16,12 @@ mvvm提供了一个构造函数$vm。使用它需要实例化一个对象。对�
 * watch 提供类似于vue的侦听属性  动态追踪数据变化的方法
 * computed 提供类似于vue的计算属性  动态计算复杂逻辑后的值
 * data-vm 视图层自定义属性数据双向绑定
+* data-show 显示元素
+* data-hide 隐藏元素
 
 #### 计划实现
 
 * 声明式的html组件模板
-* data-vm-show 控制组件的显示与隐藏
 
 ### 快速开始
 
@@ -130,6 +131,12 @@ watchVal(arr)
 给视图绑定值
 data-vm=""
 
+值为true时显示元素
+data-show=""
+
+值为true时隐藏元素
+data-hide=""
+
 执行生命周期 主要用于计算属性的订阅 ajax请求数据等等
 created()
 
@@ -148,6 +155,8 @@ methods()
 
 ---
 #一个简单的demo地址https://unjust-life.github.io/mvvm/index.html
+
+#v0.21新增data-show data-hide控制元素的显示与隐藏
 
 #v0.2 重写视图层和数据层的绑定 改为data-vm的绑定方式 更新服务端渲染的方法 重写部分逻辑 减少不必要的开销 优化代码性能
 

@@ -87,6 +87,16 @@ $vm.prototype.initView = function () {
             }
         })
 
+
+
+
+
+
+
+
+
+
+
         //初始化设置数据 渲染到页面上
         for (var key in that.data) {
             //只遍历对象自身的属性，而不包含继承于原型链上的属性。  
@@ -146,6 +156,22 @@ $vm.prototype.updateView = function (prop, val) {
                 $this.val(val)
             } else {
                 $this.text(val)
+            }
+        })
+        // data-show部分
+        $('[data-show="' + prop + '"]').each(function () {
+            if (val) {
+                $(this).show()
+            } else {
+                $(this).hide()
+            }
+        })
+        // data-hide部分
+        $('[data-hide="' + prop + '"]').each(function () {
+            if (val) {
+                $(this).hide()
+            } else {
+                $(this).show()
             }
         })
     } catch (e) {
