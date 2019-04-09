@@ -157,18 +157,4 @@ methods()
 
 
 ---
-####一个简单的demo地址https://unjust-life.github.io/html-vm/index.html
-
-#v0.21新增data-show data-hide控制元素的显示与隐藏
-
-#v0.2 重写视图层和数据层的绑定 改为data-vm的绑定方式 更新服务端渲染的方法 重写部分逻辑 减少不必要的开销 优化代码性能
-
-#v0.14新增视图自定义属性绑定数据  实验性质的{{}}表达式和虚拟dom
-
-#v0.13移除绑定函数  和set函数合并  添加计算属性 computed 可根据多个值的变动而随之改变
-
-#v0.12新增 在绑定多个dom对象后它们都会订阅对应属性 当属性改变后所有dom节点都会得到通知
-
-#v0.11新增created之后注入data默认数据
-
-#v0.1初始版
+#### 一个简单的demo地址https://unjust-life.github.io/html-vm/index.html
