@@ -157,7 +157,7 @@ methods()
 
 
 ---
-#一个简单的demo地址https://unjust-life.github.io/mvvm/index.html
+####一个简单的demo地址https://unjust-life.github.io/html-vm/index.html
 
 #v0.21新增data-show data-hide控制元素的显示与隐藏
 
