@@ -2,7 +2,6 @@
 // 构造函数的开始
 var $vm = function (obj) {
     try {
-        console.time('test')
         var that = this
         // 覆盖默认值
         this.data = obj.data
