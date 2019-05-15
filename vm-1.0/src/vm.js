@@ -3,7 +3,6 @@
 var $vm = function (obj) {
     try {
         var that = this
-        // 覆盖默认值
         this.data = obj.data
         this.computed = obj.computed
         this.watch = obj.watch
