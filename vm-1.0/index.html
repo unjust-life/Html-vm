@@ -12,20 +12,22 @@
 <body>
     <div class="container">
         <div class="form-group form-inline" style="margin: 20px auto;">
-            <input class="form-control number" type="text" data-vm="num" data-show="show" value="15">
-            <button class="btn btn-default" type="button" id="button">点击切换</button>
+            <input class="form-control number" type="text" 
+                data-vm="num" 
+                data-show="show"
+            >
+            <button class="btn btn-default" type="button" id="button">显示/隐藏</button>
             <button class="btn btn-default" type="button" id="add">将此项目添加到列表</button>
         </div>
-        <div data-vm="num"></div>
-
-        <div class="alert alert-warning">
-            <span>列表总和(计算属性演示)：</span>
-            <span data-vm="allNum"></span>
+        <div data-vm="num">
         </div>
 
-        <ul class="list">
-            <!-- 循环列表 -->
-        </ul>
+        <div class="alert alert-warning">
+            <span>列表总和：</span>
+        </div>
+
+        <v-list></v-list>
+
     </div>
 </body>
 
@@ -34,62 +36,62 @@
 
 
 var vm = new $vm({
-    // 绑定的变量值
     data: {
         show: true,          //控制input是否显示
-        num:  100,           //绑定Input输入框的值
-        list: [10]           //列表
+        num:  10,           //绑定Input输入框的值
+        list: [0, 1, 2, 3]           //列表
     },
     // 数据就绪后初始化执行生命周期
     created: function() {
-        //记录计算属性的依赖 如allNum属性  依赖于num
-        this.watchVal(['allNum', 'list'])
+
     },
-    // 观察者模式 某值发生变化时触发函数 进行dom操作
-    watch: {
+    components: {
+        'v-list': {
+            name: 'v-list',
+            props: ['list'],
+            h() {
+                var list = ''
+                this.list.forEach((item, index) => {
+                    var dom = `
+                    <li class="alert-success">
+                        <span>${item}</span>
+                        <span style="float: right;" class="delete" data-index="${index}">删除</span>
+                    </li>
+                    `
+                    list += dom
+                })
+                $('v-list').html(list)
+            }
+        }
+    },
+    watch: {  // 观察者
         list(val) {
-            var list = ''
-            // 循环数组生成dom 生成index标识
-            val.forEach((e, index) => {
-                var dom = `<li class="alert-success" data-index="${index}">${e}</li>`
-                list += dom
-            })
-            $('.list').html(list)
+
         }
     },
-    computed: {
-        allNum: function() {
-            var list = vm.data.list
-            function count (total, num){
-                var num1 = Number(total)
-                var num2 = Number(num)
-                return num1 + num2
-            }
-            var num = list.reduce(count)
-            return num
-        }
-    },
-    // 函数
-    methods: function() {
-        // 点击按钮
-        $('#button').click(function() {
+    event: function() { // this指向实例
+        var vm = this
+
+        // 点击显示隐藏按钮
+        $('#button').click(() => {
             // 如果打开就关闭 否则打开
-            if(vm.data.show) {
-                vm.set('show', false)
-            }else {
-                vm.set('show', true)
-            }
+            this.data.show
+                ? this.set('show', false)
+                : this.set('show', true)
         })
-        //添加到列表
-        $('#add').click(function() {
-            var num = vm.data.num
-            vm.data.list.push(num)
-            //触发更新
+        //添加项目到列表
+        $('#add').click(() => {
+            this.data.list.push(this.data.num)
+            this.set('list', this.data.list)
+        })
+        //删除
+        $('body').on('click', '.delete', function() {
+            var index = $(this).attr('data-index')
+            vm.data.list.splice(index, 1)
             vm.set('list', vm.data.list)
         })
     }
 })
-console.timeEnd('test')
 
 </script>
 </html>

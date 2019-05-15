@@ -17,7 +17,6 @@ HTML-vm提供了一个构造函数$vm。使用它仅仅只需要对$vm函数进�
 * 兼容性 兼容IE8
 * data  提供可以便捷修改获取的数据对象 不占用全局变量
 * watch 提供类似于vue的侦听属性  动态追踪数据变化的方法
-* computed 提供类似于vue的计算属性  动态计算复杂逻辑后的值
 * data-vm 视图层自定义属性数据双向绑定
 * data-show 显示元素
 * data-hide 隐藏元素
@@ -35,8 +34,8 @@ API文档
 <table>
   <thead>
     <tr>
-        <td>使用方式</td>
-        <td>解释</td>
+        <td>API</td>
+        <td>作用</td>
     </tr>
   </thead>
   <tobody>
@@ -59,6 +58,14 @@ API文档
     <tr>
       <td>data-hide="prop"</td>
       <td>值为true时隐藏dom元素</td>
+    </tr>
+    <tr>
+      <td>created</td>
+      <td>生命周期 属性已经挂载 组件未挂载</td>
+    </tr>
+    <tr>
+      <td>event</td>
+      <td>事件绑定存放函数</td>
     </tr>
   </tobody>
 </table>
