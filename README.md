@@ -76,4 +76,4 @@ API文档
 </table>
 
 ---
-#### 一个简单的demo地址https://unjust-life.github.io/Html-vm/index.html
+#### 一个简单的demo地址https://unjust-life.github.io/Html-vm/vm-1.0/
