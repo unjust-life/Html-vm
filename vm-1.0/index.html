@@ -13,19 +13,27 @@
     <div class="container">
         <div class="form-group form-inline" style="margin: 20px auto;">
             <input class="form-control number" type="text" 
-                data-vm="num" 
-                data-show="show"
+                v-model="num"
+                v-show="show"
             >
+            <!-- 数据双向绑定API v-model -->
+            <!-- 文本数据绑定API v-text  -->
+            <!-- 切换显示隐藏API v-show 值为true为显示-->
+            <!-- 切换显示隐藏API v-hide 值为true为隐藏-->
+
             <button class="btn btn-default" type="button" id="button">显示/隐藏</button>
+
             <button class="btn btn-default" type="button" id="add">将此项目添加到列表</button>
         </div>
-        <div data-vm="num">
+        <div v-text="num" v-hide="num">
         </div>
 
         <div class="alert alert-warning">
             <span>列表总和：</span>
+            <span v-text="quality"></span>
         </div>
 
+        <!-- 自定义组件 定义在components-->
         <v-list></v-list>
 
     </div>
@@ -37,20 +45,18 @@
 
 var vm = new $vm({
     data: {
-        show: true,          //控制input是否显示
-        num:  10,           //绑定Input输入框的值
-        list: [0, 1, 2, 3]           //列表
-    },
-    // 数据就绪后初始化执行生命周期
-    created: function() {
-
+        show: true,        //控制input是否显示
+        num:  10,          //绑定Input输入框的值
+        list: [],          //列表
+        quality: ''        //总和
     },
     components: {
         'v-list': {
             name: 'v-list',
             props: ['list'],
-            h() {
+            render(name) {
                 var list = ''
+
                 this.list.forEach((item, index) => {
                     var dom = `
                     <li class="alert-success">
@@ -60,16 +66,33 @@ var vm = new $vm({
                     `
                     list += dom
                 })
-                $('v-list').html(list)
+
+                return list
             }
         }
     },
     watch: {  // 观察者
         list(val) {
-
+            var quality = ''
+            if(this.data.list.length !== 0) {
+                quality = val.reduce((a, b) => a + b)
+            }
+            this.set('quality', quality)
         }
     },
-    event: function() { // this指向实例
+    //生命周期钩子 数据层处理结束 视图层未挂载 主要用于数据请求等等
+    created: function () {
+        setTimeout(() => {
+            this.set('list', [0, 1, 2, 3])
+        }, 0);
+    },
+    //生命周期钩子 dom已挂载 事件和数据未绑定模板
+    beforeMount: function () {
+    },
+    //生命周期钩子 dom已挂载  事件和数据绑定完毕  编译结束
+    mounted: function () {
+    },
+    event: function() { // 内部this指向实例
         var vm = this
 
         // 点击显示隐藏按钮
@@ -79,11 +102,13 @@ var vm = new $vm({
                 ? this.set('show', false)
                 : this.set('show', true)
         })
+
         //添加项目到列表
         $('#add').click(() => {
             this.data.list.push(this.data.num)
             this.set('list', this.data.list)
         })
+
         //删除
         $('body').on('click', '.delete', function() {
             var index = $(this).attr('data-index')
@@ -92,6 +117,7 @@ var vm = new $vm({
         })
     }
 })
+
 
 </script>
 </html>
