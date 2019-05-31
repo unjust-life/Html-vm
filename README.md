@@ -5,9 +5,9 @@ HTML-vm
 
 ### 介绍
 
-Vue、React、Angular等等MVVM框架现在已经相当的成熟了。最让我印象深刻的就是Vue，并不是因为它相比其他框架有什么绝对的技术优势，而是因为它真的简单、好用、易上手，而且也拥有构建大型复杂应用的能力。
+  Vue、React、Angular等等MVVM框架现在已经相当的成熟了。最让我印象深刻的就是Vue，并不是因为它相比其他框架有什么绝对的技术优势，而是因为它真的简单、好用、易上手，而且也拥有构建大型复杂应用的能力。
 
-这些框架带来的一些特性目前已经算是常识了，例如声明式的视图、数据驱动、组件化、渲染引擎、状态管理等等。要深入的理解这些特性，最好的方法就是去造一个类似的轮子，这也是这个DEMO的初衷。当然做的东西只是个垃圾而已，各位看看就好。
+  这些框架带来的一些特性目前已经算是常识了，例如声明式的视图、数据驱动、组件化、模块化、渲染引擎、状态管理等等。要深入的理解这些特性，最好的方法就是去造一个类似的轮子，这也是我开这个项目的初衷，当然做的东西只是个垃圾而已，各位姑且一看。
 
 
 ### 特性
@@ -37,18 +37,18 @@ API文档
 <table>
   <thead>
     <tr>
-        <td>API</td>
-        <td>作用</td>
+        <td>参数</td>
+        <td>说明</td>
     </tr>
   </thead>
   <tobody>
     <tr>
-      <td>this.get(prop)</td>
-      <td>获得属性当前的值 取值器</td>
+      <td>get(prop)</td>
+      <td>读取当前应用的数据</td>
     </tr>
     <tr>
-      <td>this.set(prop, data)</td>
-      <td>修改属性值 存值器 prop是属性名称 接收一个字符串 data是存入的值 可接收除undefined以外的值</td>
+      <td>set(prop, data)</td>
+      <td>修改当前应用数据 可接收除undefined以外的值</td>
     </tr>
     <tr>
       <td>v-text="prop"</td>
@@ -68,23 +68,23 @@ API文档
     </tr>
     <tr>
       <td>created</td>
-      <td>生命周期钩子 可访问data dom模板未挂载</td>
+      <td>生命周期钩子 可访问data  dom模板未挂载</td>
     </tr>
     <tr>
       <td>beforeMount</td>
-      <td>生命周期钩子 dom已挂载 事件和数据未绑定视图</td>
+      <td>生命周期钩子 dom已挂载  事件和数据未绑定视图</td>
     </tr>
     <tr>
       <td>mounted</td>
-      <td>生命周期钩子 dom已挂载 事件和数据绑定完毕 组件编译结束</td>
+      <td>生命周期钩子 dom已挂载  事件和数据绑定完毕 组件编译结束</td>
     </tr>
     <tr>
       <td>event</td>
-      <td>事件绑定处理函数 在dom加载完毕后执行</td>
+      <td>事件绑定处理函数  在dom加载完毕后执行</td>
     </tr>
     <tr>
       <td>components</td>
-      <td>自定义组件模板 接收一个对象 name—组件名称(String) props-依赖的父组件的值(Array) render-组件模板函数</td>
+      <td>自定义组件模板对象</td>
     </tr>
   </tobody>
 </table>
