@@ -43,11 +43,11 @@ API文档
   </thead>
   <tobody>
     <tr>
-      <td>get(prop)</td>
+      <td>this.get(prop)</td>
       <td>读取当前应用的数据</td>
     </tr>
     <tr>
-      <td>set(prop, data)</td>
+      <td>this.set(prop, data)</td>
       <td>修改当前应用数据 可接收除undefined以外的值</td>
     </tr>
     <tr>
