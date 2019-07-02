@@ -106,7 +106,7 @@ var vm = new $vm({
         //添加项目到列表
         $('#add').click(() => {
             this.data.list.push(+this.data.num)
-            this.set('list', +this.data.list)
+            this.set('list', this.data.list)
         })
 
         //删除
