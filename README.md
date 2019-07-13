@@ -44,19 +44,11 @@ API文档
   <tobody>
     <tr>
       <td>this.get(prop)</td>
-<<<<<<< HEAD
-      <td>读取数据</td>
-    </tr>
-    <tr>
-      <td>this.set(prop, data)</td>
-      <td>设置数据</td>
-=======
       <td>读取当前应用的数据</td>
     </tr>
     <tr>
       <td>this.set(prop, data)</td>
       <td>修改当前应用数据 可接收除undefined以外的值</td>
->>>>>>> d4b7bf0203c49dd84f11152a5b3587d1d4f537c9
     </tr>
     <tr>
       <td>v-text="prop"</td>
@@ -76,17 +68,6 @@ API文档
     </tr>
     <tr>
       <td>created</td>
-<<<<<<< HEAD
-      <td>生命周期钩子 此时dom模板未挂载 数据未渲染</td>
-    </tr>
-    <tr>
-      <td>beforeMount</td>
-      <td>生命周期钩子 此时dom已挂载 数据未渲染</td>
-    </tr>
-    <tr>
-      <td>mounted</td>
-      <td>生命周期钩子 此时dom已挂载 事件和数据绑定完毕 组件编译结束</td>
-=======
       <td>生命周期钩子 可访问data  dom模板未挂载</td>
     </tr>
     <tr>
@@ -96,7 +77,6 @@ API文档
     <tr>
       <td>mounted</td>
       <td>生命周期钩子 dom已挂载  事件和数据绑定完毕 组件编译结束</td>
->>>>>>> d4b7bf0203c49dd84f11152a5b3587d1d4f537c9
     </tr>
     <tr>
       <td>event</td>
@@ -104,11 +84,7 @@ API文档
     </tr>
     <tr>
       <td>components</td>
-<<<<<<< HEAD
       <td>name—组件名称(String) props-依赖的父组件的值(Array) render-组件模板渲染函数</td>
-=======
-      <td>自定义组件模板对象</td>
->>>>>>> d4b7bf0203c49dd84f11152a5b3587d1d4f537c9
     </tr>
   </tobody>
 </table>
